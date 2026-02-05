@@ -1,0 +1,207 @@
+@if (loading()) {
+  <div class="modal modal--loading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading analysis…</p>
+  </div>
+} @else if (analysis(); as a) {
+  <div class="modal">
+    <header class="modal__header">
+      <h2 class="modal__title">{{ a.symbol }} — {{ a.name }}</h2>
+      <button mat-icon-button type="button" (click)="close()" aria-label="Close">
+        <mat-icon>close</mat-icon>
+      </button>
+    </header>
+
+    <mat-tab-group class="modal__tabs" animationDuration="0ms">
+      <mat-tab label="Overview">
+        <div class="modal__panel">
+          <h3>Key metrics</h3>
+          <dl class="metrics">
+            <dt>Last price</dt>
+            <dd>{{ a.summary.lastPrice | number : '1.2-2' }}</dd>
+            <dt>Change (today)</dt>
+            <dd [class.positive]="a.summary.change >= 0" [class.negative]="a.summary.change < 0">
+              {{ a.summary.change >= 0 ? '+' : '' }}{{ a.summary.changePercent | number : '1.2-2' }}%
+            </dd>
+            <dt>52W high / low</dt>
+            <dd>{{ a.summary.high52w | number : '1.2-2' }} / {{ a.summary.low52w | number : '1.2-2' }}</dd>
+            <dt>Exchange</dt>
+            <dd>{{ a.summary.exchange }}</dd>
+            @if (a.summary.sector) {
+              <dt>Sector</dt>
+              <dd>{{ a.summary.sector }}</dd>
+            }
+          </dl>
+          <h3>Evaluation summary</h3>
+          <ul class="evaluation-list">
+            @for (line of a.evaluationSummary; track line) {
+              <li>{{ line }}</li>
+            }
+          </ul>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Performance">
+        <div class="modal__panel">
+          <h3>Monthly performance (recent)</h3>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Year–Month</th>
+                  <th>Open</th>
+                  <th>Close</th>
+                  <th>Return %</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (m of a.monthlyPerformance.slice(-12); track m.year + '-' + m.month) {
+                  <tr>
+                    <td>{{ m.year }}-{{ m.month }}</td>
+                    <td>{{ m.open | number : '1.2-2' }}</td>
+                    <td>{{ m.close | number : '1.2-2' }}</td>
+                    <td [class.positive]="m.returnPercent >= 0" [class.negative]="m.returnPercent < 0">
+                      {{ m.returnPercent >= 0 ? '+' : '' }}{{ m.returnPercent }}%
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <h3>Yearly performance</h3>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th>Open</th>
+                  <th>Close</th>
+                  <th>Return %</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (y of a.yearlyPerformance; track y.year) {
+                  <tr>
+                    <td>{{ y.year }}</td>
+                    <td>{{ y.open | number : '1.2-2' }}</td>
+                    <td>{{ y.close | number : '1.2-2' }}</td>
+                    <td [class.positive]="y.returnPercent >= 0" [class.negative]="y.returnPercent < 0">
+                      {{ y.returnPercent >= 0 ? '+' : '' }}{{ y.returnPercent }}%
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Indicators & trend">
+        <div class="modal__panel">
+          <h3>Trend</h3>
+          <dl class="metrics">
+            <dt>Direction</dt>
+            <dd>{{ a.trend.direction }}</dd>
+            <dt>Momentum</dt>
+            <dd>{{ a.trend.momentum }}</dd>
+            <dt>Strength (0–100)</dt>
+            <dd>{{ a.trend.strength }}</dd>
+            <dt>Volatility (ann.)</dt>
+            <dd>{{ a.trend.volatility }}%</dd>
+            @if (a.trend.supportLevel != null) {
+              <dt>Support (recent)</dt>
+              <dd>{{ a.trend.supportLevel | number : '1.2-2' }}</dd>
+            }
+            @if (a.trend.resistanceLevel != null) {
+              <dt>Resistance (recent)</dt>
+              <dd>{{ a.trend.resistanceLevel | number : '1.2-2' }}</dd>
+            }
+          </dl>
+          @if (a.indicators) {
+            <h3>Key financial indicators</h3>
+            <dl class="metrics">
+              @if (a.indicators.pe != null) {
+                <dt>P/E</dt>
+                <dd>{{ a.indicators.pe }}</dd>
+              }
+              @if (a.indicators.pb != null) {
+                <dt>P/B</dt>
+                <dd>{{ a.indicators.pb }}</dd>
+              }
+              @if (a.indicators.eps != null) {
+                <dt>EPS</dt>
+                <dd>{{ a.indicators.eps | number : '1.2-2' }}</dd>
+              }
+              @if (a.indicators.roe != null) {
+                <dt>ROE %</dt>
+                <dd>{{ a.indicators.roe }}%</dd>
+              }
+              @if (a.indicators.dividendYield != null) {
+                <dt>Dividend yield %</dt>
+                <dd>{{ a.indicators.dividendYield }}%</dd>
+              }
+              @if (a.indicators.marketCap != null) {
+                <dt>Market cap</dt>
+                <dd>{{ a.indicators.marketCap | number }}</dd>
+              }
+            </dl>
+          }
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Forecast">
+        <div class="modal__panel">
+          <h3>Next quarter</h3>
+          <p class="forecast-summary">{{ a.forecastQuarter.summary }}</p>
+          <dl class="metrics">
+            <dt>Range (low – high)</dt>
+            <dd>{{ a.forecastQuarter.priceLow | number : '1.2-2' }} – {{ a.forecastQuarter.priceHigh | number : '1.2-2' }}</dd>
+            <dt>Mid</dt>
+            <dd>{{ a.forecastQuarter.priceMid | number : '1.2-2' }}</dd>
+            <dt>Confidence</dt>
+            <dd>{{ a.forecastQuarter.confidence }}</dd>
+          </dl>
+          <p class="forecast-label">Assumptions</p>
+          <ul>
+            @for (x of a.forecastQuarter.assumptions; track x) {
+              <li>{{ x }}</li>
+            }
+          </ul>
+          <p class="forecast-label">Risks</p>
+          <ul>
+            @for (x of a.forecastQuarter.risks; track x) {
+              <li>{{ x }}</li>
+            }
+          </ul>
+
+          <h3>Next year</h3>
+          <p class="forecast-summary">{{ a.forecastYear.summary }}</p>
+          <dl class="metrics">
+            <dt>Range (low – high)</dt>
+            <dd>{{ a.forecastYear.priceLow | number : '1.2-2' }} – {{ a.forecastYear.priceHigh | number : '1.2-2' }}</dd>
+            <dt>Mid</dt>
+            <dd>{{ a.forecastYear.priceMid | number : '1.2-2' }}</dd>
+            <dt>Confidence</dt>
+            <dd>{{ a.forecastYear.confidence }}</dd>
+          </dl>
+          <p class="forecast-label">Assumptions</p>
+          <ul>
+            @for (x of a.forecastYear.assumptions; track x) {
+              <li>{{ x }}</li>
+            }
+          </ul>
+          <p class="forecast-label">Risks</p>
+          <ul>
+            @for (x of a.forecastYear.risks; track x) {
+              <li>{{ x }}</li>
+            }
+          </ul>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+} @else {
+  <div class="modal modal--loading">
+    <p>No data available for this symbol.</p>
+  </div>
+}

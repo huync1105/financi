@@ -7,3 +7,14 @@ export {
   selectSidebarHover,
   selectSidebarOpen,
 } from './ui/ui.selectors';
+export { StockActions } from './stock/stock.actions';
+export { stockReducer, initialStockState, type StockState } from './stock/stock.reducer';
+export { stockFeatureKey } from './stock/stock.reducer';
+export {
+  selectStockState,
+  selectSummaries,
+  selectSelectedSymbol,
+  selectChartType,
+  selectDetailModalSymbol,
+  selectSelectedSummary,
+} from './stock/stock.selectors';

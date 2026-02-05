@@ -1,0 +1,63 @@
+<div class="stock-page">
+  <header class="stock-page__header">
+    <h1>Stock</h1>
+    <p class="stock-page__subtitle">Vietnamese domestic market (HOSE) — real-time data & charts</p>
+  </header>
+
+  <div class="stock-page__content">
+    <aside class="ticker-list">
+      <h2 class="ticker-list__title">Tickers</h2>
+      @for (s of summaries(); track s.symbol) {
+        <button
+          type="button"
+          class="ticker-item"
+          [class.ticker-item--active]="selectedSymbol() === s.symbol"
+          (click)="selectSymbol(s.symbol)"
+        >
+          <span class="ticker-item__symbol">{{ s.symbol }}</span>
+          <span class="ticker-item__price">{{ s.lastPrice | number : '1.2-2' }}</span>
+          <span class="ticker-item__change" [class.positive]="s.change >= 0" [class.negative]="s.change < 0">
+            {{ s.change >= 0 ? '+' : '' }}{{ s.changePercent | number : '1.2-2' }}%
+          </span>
+        </button>
+      }
+    </aside>
+
+    <section class="chart-section">
+      @if (selectedSummary(); as summary) {
+        <div class="chart-section__toolbar">
+          <h2 class="chart-section__title">{{ summary.symbol }} — {{ summary.name }}</h2>
+          <mat-button-toggle-group [value]="chartType()" (change)="setChartType($event.value)">
+            <mat-button-toggle value="candlestick">Candlestick</mat-button-toggle>
+            <mat-button-toggle value="line">Line</mat-button-toggle>
+          </mat-button-toggle-group>
+          <button mat-flat-button color="primary" (click)="openDetail(summary.symbol)">
+            View details & forecast
+          </button>
+        </div>
+
+        @if (loading()) {
+          <div class="chart-section__loading">
+            <mat-spinner diameter="40"></mat-spinner>
+          </div>
+        } @else {
+          <div class="chart-wrap" echarts [options]="chartOptions()!"></div>
+        }
+
+        <div class="legend">
+          <h3 class="legend__title">Chart guide</h3>
+          <ul class="legend__list">
+            <li><strong>Candlestick:</strong> Green = close &gt; open (up), Red = close &lt; open (down). Body = open/close, wicks = high/low.</li>
+            <li><strong>Line:</strong> Closing price over time.</li>
+            <li><strong>Volume:</strong> Trading volume (bars below). Higher volume often confirms trend strength.</li>
+            <li><strong>Trend:</strong> Use the slider or drag the chart to zoom into a time range.</li>
+          </ul>
+        </div>
+      } @else {
+        <mat-card appearance="outlined" class="chart-section__empty">
+          <mat-card-content>Select a ticker to view the chart.</mat-card-content>
+        </mat-card>
+      }
+    </section>
+  </div>
+</div>

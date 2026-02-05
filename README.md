@@ -54,6 +54,17 @@ ng e2e
 
 Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
+## Stock feature (real API)
+
+The Stock page can use **live data** from [Alpha Vantage](https://www.alphavantage.co/) (free tier: 25 requests/day).
+
+1. Get a free API key: [https://www.alphavantage.co/support/#api-key](https://www.alphavantage.co/support/#api-key)
+2. Set it in `src/environments/environment.ts`:
+   ```ts
+   alphaVantageApiKey: 'YOUR_KEY_HERE',
+   ```
+3. With the key set, the app fetches real quotes and daily OHLC for **IBM**, **AAPL**, and **MSFT** (default symbols). Without a key, the app uses built-in mock data (Vietnamese-style tickers).
+
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

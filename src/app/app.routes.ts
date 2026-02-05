@@ -12,6 +12,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/home/home.component').then((m) => m.default),
       },
+      {
+        path: 'stock',
+        loadComponent: () =>
+          import('./features/stock/stock-page.component').then((m) => m.default),
+      },
     ],
   },
   { path: '**', redirectTo: 'home' },
