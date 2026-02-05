@@ -1,18 +1,31 @@
-import type { Question, QuestionType } from '../models/interview.model';
+import type {Question, QuestionType} from '../models/interview.model';
 
 const initialTypes: QuestionType[] = [
-  { id: 't1', name: 'Angular' },
-  { id: 't2', name: 'React' },
-  { id: 't3', name: 'JavaScript' },
+  {id: 't1', name: 'Web basic'},
 ];
 
 const initialQuestions: Question[] = [
-  { id: 'q1', typeId: 't1', text: 'What is the difference between constructor and ngOnInit?', answer: 'Constructor is a default class method; ngOnInit is an Angular lifecycle hook that runs after the first change detection. Use ngOnInit for initialization logic that depends on input bindings.' },
-  { id: 'q2', typeId: 't1', text: 'What are Angular signals?', answer: 'Signals are reactive primitives that hold a value and notify consumers when the value changes. They are used with computed() and effect() for fine-grained reactivity.' },
-  { id: 'q3', typeId: 't1', text: 'Explain dependency injection in Angular.', answer: 'Angular\'s DI framework provides dependencies to classes (e.g. services) via constructor injection. Providers are configured in injectors (root or component-level).' },
-  { id: 'q4', typeId: 't2', text: 'What is the virtual DOM?', answer: 'The virtual DOM is an in-memory representation of the real DOM. React compares the virtual DOM with the previous version and updates only the changed parts in the real DOM (reconciliation).' },
-  { id: 'q5', typeId: 't2', text: 'What are React hooks?', answer: 'Hooks are functions that let you use state and other React features in function components. Examples: useState, useEffect, useContext.' },
-  { id: 'q6', typeId: 't3', text: 'What is the difference between let, const, and var?', answer: 'let and const are block-scoped; var is function-scoped. const cannot be reassigned; let and var can. Prefer const by default, then let.' },
+  {
+    id: 'q1',
+    typeId: 't1',
+    text: 'When a user enters a URL in the browser and presses Enter, walk me through what happens end-to-end until the page is rendered.',
+    answer: '1. Browser performs <b>DNS lookup</b> to resolve domain to IP.<br>2. Establishes <b>TCP connection</b> and <b>TLS handshake</b> (HTTPS).<br>3. Sends <b>HTTP request</b> to the server.<br>4. Server processes request and returns <b>HTTP response</b>.<br>5. Browser parses <b>HTML</b> → builds <b>DOM</b>.<br>6. Parses <b>CSS</b> → builds <b>CSSOM</b>.<br>7. Executes <b>JavaScript</b>.<br>8. Builds <b>render tree</b>.<br>9. Performs <b>layout</b> and <b>paint</b> to render the page.',
+    imageUrls: []
+  },
+  {
+    id: 'q2',
+    typeId: 't1',
+    text: 'Explain the difference between CSR, SSR, SSG, and ISR.',
+    answer: '<b>CSR (Client-Side Rendering)</b>: HTML is minimal, rendering happens in the <b>browser</b> using JavaScript; slower first paint, better interactivity.<br><b>SSR (Server-Side Rendering)</b>: HTML is rendered on the <b>server per request</b>; faster first paint, better <b>SEO</b>, higher server cost.<br><b>SSG (Static Site Generation)</b>: HTML is generated at <b>build time</b>; very fast, low cost, content is <b>static</b>.<br><b>ISR (Incremental Static Regeneration)</b>: Hybrid of SSG + SSR; pages are <b>revalidated</b> and regenerated in the background on demand.',
+    imageUrls: []
+  },
+  {
+    id: 'q3',
+    typeId: 't1',
+    text: 'What is CORS and why does it exist?',
+    answer: '<b>CORS (Cross-Origin Resource Sharing)</b> is a <b>browser security mechanism</b> that controls cross-origin HTTP requests. It exists to enforce the <b>Same-Origin Policy</b>, preventing malicious websites from accessing sensitive resources. Servers explicitly allow trusted origins using <b>CORS headers</b> like <b>Access-Control-Allow-Origin</b>.',
+    imageUrls: []
+  }
 ];
 
 let types = [...initialTypes];
@@ -34,7 +47,7 @@ export function getAllTypes(): QuestionType[] {
 }
 
 export function addType(name: string): QuestionType {
-  const newType: QuestionType = { id: nextTypeId(), name: name.trim() };
+  const newType: QuestionType = {id: nextTypeId(), name: name.trim()};
   types.push(newType);
   return newType;
 }
@@ -42,7 +55,7 @@ export function addType(name: string): QuestionType {
 export function updateType(id: string, name: string): QuestionType | null {
   const idx = types.findIndex((t) => t.id === id);
   if (idx === -1) return null;
-  types[idx] = { ...types[idx], name: name.trim() };
+  types[idx] = {...types[idx], name: name.trim()};
   return types[idx];
 }
 
@@ -75,7 +88,7 @@ export function addQuestion(question: Omit<Question, 'id'>): Question {
 export function updateQuestion(id: string, updates: Partial<Omit<Question, 'id'>>): Question | null {
   const idx = questions.findIndex((q) => q.id === id);
   if (idx === -1) return null;
-  questions[idx] = { ...questions[idx], ...updates };
+  questions[idx] = {...questions[idx], ...updates};
   return questions[idx];
 }
 

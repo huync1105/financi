@@ -41,7 +41,7 @@
       @if (showCorrectAnswer()) {
         <div class="learning-modal__correct">
           <strong>Correct answer:</strong>
-          <p>{{ q.answer }}</p>
+          <p [innerHTML]="q.answer"></p>
         </div>
       }
     }

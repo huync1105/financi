@@ -69,6 +69,20 @@ export default class InterviewPageComponent implements OnInit {
     return list.slice(start, start + this.pageSize());
   });
 
+  /** Set of question ids that are expanded (show answer + images + actions). */
+  readonly expandedIds = signal<Set<string>>(new Set());
+
+  isExpanded(id: string): boolean {
+    return this.expandedIds().has(id);
+  }
+
+  toggleExpanded(id: string): void {
+    const set = new Set(this.expandedIds());
+    if (set.has(id)) set.delete(id);
+    else set.add(id);
+    this.expandedIds.set(set);
+  }
+
   ngOnInit(): void {
     this.interviewService.load();
     this.selectType('t1');

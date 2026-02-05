@@ -64,20 +64,31 @@
             @for (q of paginatedQuestions(); track q.id) {
               <mat-card appearance="outlined" class="question-card">
                 <mat-card-content>
-                  <p class="question-card__text">{{ q.text }}</p>
-                  @if (q.imageUrls?.length) {
-                    <div class="question-card__images">
-                      @for (url of q.imageUrls; track url) {
-                        <img [src]="url" alt="Question image" class="question-card__img" />
-                      }
+                  <div class="question-card__header" (click)="toggleExpanded(q.id)">
+                    <p class="question-card__text">{{ q.text }}</p>
+                    <button mat-icon-button type="button" (click)="toggleExpanded(q.id); $event.stopPropagation()" [attr.aria-expanded]="isExpanded(q.id)" aria-label="Toggle answer">
+                      <mat-icon>{{ isExpanded(q.id) ? 'expand_less' : 'expand_more' }}</mat-icon>
+                    </button>
+                  </div>
+                  <div class="question-card__expandable" [class.expanded]="isExpanded(q.id)">
+                    <div class="question-card__expandable-inner">
+                      <div class="question-card__body">
+                        @if (q.imageUrls?.length) {
+                          <div class="question-card__images">
+                            @for (url of q.imageUrls; track url) {
+                              <img [src]="url" alt="Question image" class="question-card__img" />
+                            }
+                          </div>
+                        }
+                        <p class="question-card__answer" [innerHTML]="q.answer"></p>
+                      </div>
+                      <mat-card-actions>
+                        <button mat-button (click)="openEditQuestion(q)">Edit</button>
+                        <button mat-button color="warn" (click)="deleteQuestion(q)">Delete</button>
+                      </mat-card-actions>
                     </div>
-                  }
-                  <p class="question-card__answer">{{ q.answer }}</p>
+                  </div>
                 </mat-card-content>
-                <mat-card-actions>
-                  <button mat-button (click)="openEditQuestion(q)">Edit</button>
-                  <button mat-button color="warn" (click)="deleteQuestion(q)">Delete</button>
-                </mat-card-actions>
               </mat-card>
             }
             <mat-paginator
