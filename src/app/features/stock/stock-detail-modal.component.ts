@@ -6,11 +6,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { StockService } from './services/stock.service';
 import type { StockAnalysis } from './models/stock.model';
+import {MatIconButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-stock-detail-modal',
   standalone: true,
-  imports: [DecimalPipe, MatDialogModule, MatIconModule, MatTabsModule, MatProgressSpinnerModule],
+  imports: [DecimalPipe, MatDialogModule, MatIconModule, MatTabsModule, MatProgressSpinnerModule, MatIconButton],
   templateUrl: './stock-detail-modal.component.html',
   styleUrl: './stock-detail-modal.component.scss',
 })

@@ -1,0 +1,103 @@
+<div class="interview-page">
+  <header class="interview-page__header">
+    <h1>Interview</h1>
+    <p class="interview-page__subtitle">Manage question types and questions. Use Learning mode to practice.</p>
+  </header>
+
+  <div class="interview-page__content">
+    <aside class="types-panel">
+      <div class="types-panel__header">
+        <h2>Types</h2>
+        <button mat-icon-button type="button" (click)="openAddType()" aria-label="Add type">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <mat-nav-list class="types-list">
+        @for (t of types(); track t.id) {
+          <div class="type-item" [class.type-item--active]="selectedTypeId() === t.id">
+            <a mat-list-item (click)="selectType(t.id)">
+              <span matListItemTitle>{{ t.name }}</span>
+            </a>
+            <div class="type-item__actions">
+              <button mat-icon-button type="button" (click)="openEditType(t); $event.stopPropagation()" aria-label="Edit type">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button type="button" (click)="deleteType(t); $event.stopPropagation()" aria-label="Delete type">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        }
+      </mat-nav-list>
+    </aside>
+
+    <section class="questions-panel">
+      @if (selectedType(); as type) {
+        <div class="questions-panel__header">
+          <h2>{{ type.name }}</h2>
+          <div class="questions-panel__actions">
+            <button mat-flat-button color="primary" (click)="startLearning()" [disabled]="questions().length === 0">
+              <mat-icon>school</mat-icon>
+              Learning
+            </button>
+            <button mat-flat-button (click)="openAddQuestion()">
+              <mat-icon>add</mat-icon>
+              Add question
+            </button>
+          </div>
+        </div>
+        @if (questions().length > 0) {
+          <div class="questions-panel__toolbar">
+            <mat-form-field appearance="outline" class="search-field">
+              <mat-label>Search questions</mat-label>
+              <input matInput type="text" [value]="searchQuery()" (input)="onSearchChange($any($event.target).value)" placeholder="Text contained in question..." />
+              <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
+          </div>
+        }
+        <div class="questions-list">
+          @if (questions().length === 0) {
+            <p class="questions-list__empty">No questions yet. Add one to get started.</p>
+          } @else if (filteredQuestions().length === 0) {
+            <p class="questions-list__empty">No questions match "{{ searchQuery() }}".</p>
+          } @else {
+            @for (q of paginatedQuestions(); track q.id) {
+              <mat-card appearance="outlined" class="question-card">
+                <mat-card-content>
+                  <p class="question-card__text">{{ q.text }}</p>
+                  @if (q.imageUrls?.length) {
+                    <div class="question-card__images">
+                      @for (url of q.imageUrls; track url) {
+                        <img [src]="url" alt="Question image" class="question-card__img" />
+                      }
+                    </div>
+                  }
+                  <p class="question-card__answer">{{ q.answer }}</p>
+                </mat-card-content>
+                <mat-card-actions>
+                  <button mat-button (click)="openEditQuestion(q)">Edit</button>
+                  <button mat-button color="warn" (click)="deleteQuestion(q)">Delete</button>
+                </mat-card-actions>
+              </mat-card>
+            }
+            <mat-paginator
+              [length]="totalFiltered()"
+              [pageSize]="pageSize()"
+              [pageIndex]="pageIndex()"
+              [pageSizeOptions]="[5, 10, 25, 50]"
+              (page)="onPageChange($event)"
+              showFirstLastButtons
+              class="questions-paginator"
+            />
+          }
+        </div>
+      } @else {
+        <mat-card appearance="outlined" class="questions-panel__empty">
+          <mat-card-content>
+            <p>Select a type from the list or add a new type to manage questions.</p>
+          </mat-card-content>
+        </mat-card>
+      }
+    </section>
+  </div>
+</div>

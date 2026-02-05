@@ -1,0 +1,86 @@
+.learning-modal {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+.learning-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 0.5rem;
+}
+
+.learning-modal__header h2 {
+  margin: 0;
+}
+
+.learning-modal__progress {
+  margin-bottom: 1rem;
+}
+
+.learning-modal__progress-text {
+  font-size: 0.875rem;
+  color: var(--financi-outline, #acbac4);
+  display: block;
+  margin-bottom: 0.25rem;
+  padding: 0 8px;
+}
+
+.learning-modal__question {
+  margin-bottom: 1rem;
+}
+
+.learning-modal__question-text {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--financi-on-surface, #30364f);
+  line-height: 1.5;
+}
+
+.learning-modal__images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.learning-modal__img {
+  max-width: 200px;
+  max-height: 120px;
+  object-fit: contain;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.learning-modal__input {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.learning-modal__correct {
+  padding: 1rem;
+  background: var(--financi-surface-variant, #ededce);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.learning-modal__correct strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--financi-on-surface, #30364f);
+}
+
+.learning-modal__correct p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--financi-on-surface, #30364f);
+}
+
+.learning-modal__actions {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}

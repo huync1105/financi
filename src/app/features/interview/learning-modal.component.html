@@ -1,0 +1,69 @@
+<div class="learning-modal">
+  <header class="learning-modal__header">
+    <h2 mat-dialog-title>Learning</h2>
+    <button mat-icon-button type="button" (click)="close()" aria-label="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+
+  <div class="learning-modal__progress">
+    <span class="learning-modal__progress-text">
+      Question {{ currentIndex() + 1 }} of {{ questions.length }}
+    </span>
+    <mat-progress-bar mode="determinate" [value]="progress() * 100"></mat-progress-bar>
+  </div>
+
+  <mat-dialog-content>
+    @if (currentQuestion(); as q) {
+      <div class="learning-modal__question">
+        <p class="learning-modal__question-text">{{ q.text }}</p>
+        @if (q.imageUrls?.length) {
+          <div class="learning-modal__images">
+            @for (url of q.imageUrls; track url) {
+              <img [src]="url" alt="Question" class="learning-modal__img" />
+            }
+          </div>
+        }
+      </div>
+
+      <mat-form-field appearance="outline" class="learning-modal__input">
+        <mat-label>Your answer</mat-label>
+        <textarea
+          matInput
+          [ngModel]="userAnswer()"
+          (ngModelChange)="userAnswer.set($event)"
+          rows="4"
+          placeholder="Type your answer here..."
+          [readonly]="showCorrectAnswer()"
+        ></textarea>
+      </mat-form-field>
+
+      @if (showCorrectAnswer()) {
+        <div class="learning-modal__correct">
+          <strong>Correct answer:</strong>
+          <p>{{ q.answer }}</p>
+        </div>
+      }
+    }
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="learning-modal__actions">
+    <button mat-button (click)="prev()" [disabled]="!canPrev()">
+      <mat-icon>arrow_back</mat-icon>
+      Previous
+    </button>
+    @if (!showCorrectAnswer()) {
+      <button mat-flat-button color="primary" (click)="revealAnswer()">
+        Show answer
+      </button>
+    } @else {
+      <button mat-flat-button color="primary" (click)="next()" [disabled]="!canNext()">
+        Next
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    }
+    @if (showCorrectAnswer() && !canNext()) {
+      <button mat-flat-button (click)="close()">Done</button>
+    }
+  </mat-dialog-actions>
+</div>

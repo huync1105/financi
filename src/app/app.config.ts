@@ -5,7 +5,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
 
 import { routes } from './app.routes';
-import { stockReducer, uiReducer } from './core/store';
+import { interviewReducer, stockReducer, uiReducer } from './core/store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,6 +13,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimations(),
     provideHttpClient(),
-    provideStore({ ui: uiReducer, stock: stockReducer }),
+    provideStore({ ui: uiReducer, stock: stockReducer, interview: interviewReducer }),
   ],
 };

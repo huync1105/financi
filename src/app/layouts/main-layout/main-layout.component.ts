@@ -57,6 +57,7 @@ export default class MainLayoutComponent {
   readonly navItems: NavItem[] = [
     { label: 'Home', icon: 'home', route: '/home' },
     { label: 'Stock', icon: 'candlestick_chart', route: '/stock' },
+    { label: 'Interview', icon: 'quiz', route: '/interview' },
   ];
 
   onSidebarMouseEnter(): void {

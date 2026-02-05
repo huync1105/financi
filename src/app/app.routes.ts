@@ -17,6 +17,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/stock/stock-page.component').then((m) => m.default),
       },
+      {
+        path: 'interview',
+        loadComponent: () =>
+          import('./features/interview/interview-page.component').then((m) => m.default),
+      },
     ],
   },
   { path: '**', redirectTo: 'home' },
