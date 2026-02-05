@@ -1,0 +1,80 @@
+<div class="layout">
+  <!-- Vertical sidebar: icons only, expand on hover (desktop) or toggle (mobile) -->
+  <aside
+    class="sidebar"
+    [class.sidebar--open]="sidebarVisible()"
+    (mouseenter)="onSidebarMouseEnter()"
+    (mouseleave)="onSidebarMouseLeave()"
+  >
+    <div class="sidebar__header">
+      <span class="sidebar__logo" [class.sidebar__logo--full]="sidebarVisible()">
+        Financi
+      </span>
+    </div>
+    <nav class="sidebar__nav">
+      <mat-nav-list>
+      @for (item of navItems; track item.route) {
+        <a
+          mat-list-item
+          [routerLink]="item.route"
+          routerLinkActive="sidebar__link--active"
+          [routerLinkActiveOptions]="{ exact: item.route === '/home' }"
+          (click)="closeMobileMenu()"
+          class="sidebar__link"
+        >
+          <span matListItemIcon>
+            <mat-icon>{{ item.icon }}</mat-icon>
+          </span>
+          @if (sidebarVisible()) {
+            <span matListItemTitle>{{ item.label }}</span>
+          }
+        </a>
+      }
+      </mat-nav-list>
+    </nav>
+    <div class="sidebar__footer">
+      <button
+        mat-icon-button
+        type="button"
+        (click)="toggleSidebar()"
+        [attr.aria-label]="sidebarOpen() ? 'Collapse menu' : 'Expand menu'"
+        class="sidebar__toggle"
+      >
+        <mat-icon>{{ sidebarOpen() ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Mobile menu overlay -->
+  @if (isHandset()) {
+    @if (mobileMenuOpen()) {
+      <div
+        class="sidebar-overlay"
+        role="button"
+        tabindex="0"
+        (click)="closeMobileMenu()"
+        (keydown.escape)="closeMobileMenu()"
+        aria-label="Close menu"
+      ></div>
+    }
+  }
+
+  <!-- Main content -->
+  <main class="content">
+    <header class="content__toolbar">
+      <button
+        mat-icon-button
+        type="button"
+        (click)="toggleMobileMenu()"
+        aria-label="Toggle menu"
+        class="content__menu-btn"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="content__title">Financi</span>
+    </header>
+    <div class="content__body">
+      <router-outlet />
+    </div>
+  </main>
+</div>

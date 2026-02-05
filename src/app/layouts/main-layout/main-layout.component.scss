@@ -1,0 +1,222 @@
+$sidebar-width-collapsed: 64px;
+$sidebar-width-expanded: 240px;
+$toolbar-height: 56px;
+$financi-primary: #0c2c55;
+$financi-surface: #f0f0db;
+$financi-surface-variant: #ededce;
+/* Sidebar: teal for better contrast with white icons */
+$sidebar-bg: #296374;
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: $sidebar-width-collapsed;
+  background-color: $sidebar-bg;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: width 0.2s ease;
+  overflow: hidden;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+
+  &--open {
+    width: $sidebar-width-expanded;
+  }
+
+  &__header {
+    flex-shrink: 0;
+    padding: 16px;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__logo {
+    white-space: nowrap;
+    font-weight: 600;
+    font-size: 1.25rem;
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    transition: opacity 0.2s ease, max-width 0.2s ease;
+
+    &--full {
+      opacity: 1;
+      max-width: 200px;
+    }
+  }
+
+  &__nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+
+    mat-nav-list {
+      padding: 0;
+    }
+
+    .mat-mdc-list-item {
+      padding-left: 16px;
+      padding-right: 16px;
+      height: 48px;
+    }
+  }
+
+  /* Collapsed: center icon in the narrow sidebar */
+  &:not(.sidebar--open) .sidebar__nav .mat-mdc-list-item {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  &:not(.sidebar--open) .sidebar__nav .sidebar__link {
+    justify-content: center;
+    padding: 0;
+  }
+
+  &:not(.sidebar--open) .sidebar__nav .sidebar__link [matListItemIcon] {
+    margin-right: 0;
+  }
+
+  &__link {
+    color: rgba(255, 255, 255, 0.95);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0;
+    gap: 16px;
+    transition: background-color 0.15s, color 0.15s;
+    width: 100%;
+    box-sizing: border-box;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    &--active {
+      background-color: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+
+    .mat-icon {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      font-size: 24px;
+      color: inherit;
+    }
+
+    [matListItemTitle] {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__footer {
+    flex-shrink: 0;
+    padding: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  &__toggle {
+    color: rgba(255, 255, 255, 0.85);
+  }
+}
+
+// When sidebar is open on mobile (drawer), show overlay
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  animation: fadeIn 0.2s ease;
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.2s ease, width 0.2s ease;
+
+    &--open {
+      transform: translateX(0);
+      width: $sidebar-width-expanded;
+    }
+  }
+}
+
+@media (min-width: 1025px) {
+  .sidebar--open .sidebar__logo {
+    opacity: 1;
+    max-width: 200px;
+  }
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  margin-left: $sidebar-width-collapsed;
+  min-height: 100vh;
+  background-color: $financi-surface;
+}
+
+.content__toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: $toolbar-height;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: $financi-surface-variant;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.content__menu-btn {
+  display: none;
+}
+
+.content__title {
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: var(--financi-on-surface, #30364f);
+}
+
+.content__body {
+  flex: 1;
+  overflow: auto;
+}
+
+/* Tablet and phone: content full width, menu in drawer */
+@media (max-width: 1024px) {
+  .content {
+    margin-left: 0;
+  }
+
+  .content__menu-btn {
+    display: block;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

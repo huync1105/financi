@@ -1,0 +1,35 @@
+// Financi brand colors
+// 0C2C55, 296374, 629FAD, EDEDCE, 30364F, ACBAC4, E1D9BC, F0F0DB
+
+:root {
+  // Primary (dark blue)
+  --financi-primary: #0c2c55;
+  --financi-primary-light: #296374;
+  --financi-primary-lighter: #629fad;
+  // Surfaces (cream/beige)
+  --financi-surface: #f0f0db;
+  --financi-surface-variant: #ededce;
+  --financi-surface-warm: #e1d9bc;
+  // Dark text / secondary
+  --financi-on-surface: #30364f;
+  --financi-outline: #acbac4;
+
+  // Override Material theme tokens with Financi palette
+  --mat-sys-primary: var(--financi-primary);
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-primary-container: var(--financi-primary-lighter);
+  --mat-sys-on-primary-container: var(--financi-primary);
+  --mat-sys-secondary: var(--financi-primary-light);
+  --mat-sys-on-secondary: #ffffff;
+  --mat-sys-secondary-container: var(--financi-surface-warm);
+  --mat-sys-on-secondary-container: var(--financi-on-surface);
+  --mat-sys-surface: var(--financi-surface);
+  --mat-sys-surface-container: var(--financi-surface-variant);
+  --mat-sys-surface-container-low: var(--financi-surface);
+  --mat-sys-surface-container-lowest: #ffffff;
+  --mat-sys-on-surface: var(--financi-on-surface);
+  --mat-sys-outline: var(--financi-outline);
+  --mat-sys-background: var(--financi-surface);
+  --mat-sys-on-background: var(--financi-on-surface);
+  --mat-sys-surface-tint: var(--financi-primary);
+}
