@@ -8,25 +8,30 @@ export interface InterviewState {
   types: QuestionType[];
   questions: Question[];
   selectedTypeId: string | null;
+  invokedApi: boolean;
 }
 
 export const initialInterviewState: InterviewState = {
   types: [],
   questions: [],
   selectedTypeId: null,
+  invokedApi: false
 };
 
 export const interviewReducer = createReducer(
   initialInterviewState,
-  on(InterviewActions.loadSuccess, (_, { types, questions }) => ({
+  on(InterviewActions.loadSuccess, (_, { types, questions, selectedTypeId, invokedApi }) => ({
     types: [...types],
     questions: [...questions],
-    selectedTypeId: null,
+    selectedTypeId,
+    invokedApi
   })),
-  on(InterviewActions.setSelectedType, (state, { typeId }) => ({
-    ...state,
-    selectedTypeId: typeId,
-  })),
+  on(InterviewActions.setSelectedType, (state, { typeId }) => {
+    return {
+      ...state,
+      selectedTypeId: typeId,
+    }
+  }),
   on(InterviewActions.addTypeSuccess, (state, { questionType }) => ({
     ...state,
     types: [...state.types, questionType],
@@ -53,4 +58,20 @@ export const interviewReducer = createReducer(
     ...state,
     questions: state.questions.filter((q) => q.id !== questionId),
   })),
+  on(InterviewActions.setTypes, (state, { types }) => {
+    return {
+      ...state,
+      types
+    }
+  }),
+  on(InterviewActions.getQuestions, (state, { questions }) => {
+    return {
+      ...state,
+      questions
+    }
+  }),
+  on(InterviewActions.invokedApi, (state, { invokedApi }) => ({
+    ...state,
+    invokedApi
+  }))
 );

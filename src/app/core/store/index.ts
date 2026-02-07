@@ -30,3 +30,17 @@ export {
   selectQuestionsForSelectedType,
   selectQuestionById,
 } from './interview/interview.selectors';
+export { ChatActions } from './chat/chat.actions';
+export { chatReducer, initialChatState, type ChatState } from './chat/chat.reducer';
+export { chatFeatureKey } from './chat/chat.reducer';
+export {
+  selectChatState,
+  selectConnectionStatus,
+  selectConversations,
+  selectSelectedConversationId,
+  selectSelectedConversation,
+  selectMessagesForSelectedConversation,
+  selectMessagesByConversation,
+  selectTyping,
+  selectIsTypingInSelected,
+} from './chat/chat.selectors';

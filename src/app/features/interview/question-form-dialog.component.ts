@@ -4,13 +4,14 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import type { Question } from './models/interview.model';
+import {MatButton} from '@angular/material/button';
 
 export type QuestionFormData = { typeId: string } | { question: Question };
 
 @Component({
   selector: 'app-question-form-dialog',
   standalone: true,
-  imports: [MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule],
+  imports: [MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule, MatButton],
   template: `
     <h2 mat-dialog-title>{{ isEdit ? 'Edit question' : 'New question' }}</h2>
     <mat-dialog-content>
@@ -64,6 +65,7 @@ export class QuestionFormDialogComponent {
       .split('\n')
       .map((s) => s.trim())
       .filter(Boolean);
+
     return {
       text: this.text.trim(),
       answer: this.answer.trim(),

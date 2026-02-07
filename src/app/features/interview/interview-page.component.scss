@@ -210,3 +210,10 @@
   object-fit: cover;
   border-radius: 4px;
 }
+
+:host::ng-deep {
+  .mat-mdc-progress-spinner {
+    width: 60px !important;
+    height: 60px !important;
+  }
+}
